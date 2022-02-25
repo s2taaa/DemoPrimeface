@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Catalog</title>
+</h:head>
+
+<h:body>
+    <h1  style="align-items: center"> Catalog-list</h1>
+    <br></br>
+        <p:commandButton value="Add new Catalog" id="btnToCatalogForm"
+                         onclick="PF('AddCatalog').show()"/>
+        <p:commandButton style="float: right" value="to Product" id="btnToCatalog"
+                     action="#{Router.toProduct}"/>
+    <br></br>
+    <h:form id="frmCatalog">
+            <div class="card">
+                <p:dataTable var="catalog" value="#{CatalogData.catalogs}">
+                    <p:column headerText="id">
+                        <h:outputText value="#{catalog.id}" />
+                    </p:column>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{catalog.name}" />
+                    </p:column>
+
+
+                    <p:column headerText="Feature" exportable="false">
+                        <p:commandButton value="Update" id="btnUpdateCatalog" onclick="PF('UpdateCatalog').show()" icon="pi pi-pencil" update="frmUpdateCatalog"
+                                         styleClass="edit-button rounded-button ui-button-success" >
+                            <f:setPropertyActionListener target="#{CatalogData.catalogSelected}" value="#{catalog}"/>
+                        </p:commandButton>
+                        <p:commandButton value="Delete" id="btnDeleteCatalog" action="#{CatalogData.catalogConnector.delete(catalog.id)}" class="ui-button-warning rounded-button" icon="pi pi-trash" >
+                            <p:confirm header="Confirmation" message="Do you want to delete Catalog?" icon="pi pi-info-circle"/>
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+                        </p:confirmDialog>
+                        <p:commandButton value="Add product" id="btnAddProduct" onclick="PF('AddProduct').show()" icon="pi"  update="frmAddProduct"
+                                         styleClass="rounded-button ui-button-text-icon-primary" >
+                            <f:setPropertyActionListener target="#{catalog.id}" value="#{catalogId}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>
+    </h:form>
+    <hr></hr>
+
+    <!--modal add catalog-->
+
+    <p:dialog header="Add Catalog" widgetVar="AddCatalog"  modal="true">
+        <h:form id="frmAddCatalog" style="text-align: center" enctype="multipart/form-data" >
+            <p>
+                <p:inputText style="width: 20rem" placeholder="name" value="#{CatalogData.name}"/>
+            </p>
+            <br></br>
+            <p>
+                <p:commandButton value="add catalog"  update="frmCatalog" action="#{CatalogData.add()}">
+                </p:commandButton>
+            </p>
+        </h:form>
+
+    </p:dialog>
+
+    <!--modal add proudct in catalog-->
+
+    <p:dialog header="Add Product" widgetVar="AddProduct"  modal="true">
+        <h:form id="frmAddProduct" style="text-align: center" enctype="multipart/form-data" >
+            <p>
+                <p:inputText style="width: 20rem" placeholder="name" value="#{ProductData.productName}"/>
+            </p>
+            <p>
+                <p:inputText style="width: 20rem" placeholder="price" value="#{ProductData.productPrice}"/>
+            </p>
+            <p>
+                <p:selectOneMenu style="width: 20rem" id="select-catalog" value="#{ProductData.productCatalogId}">
+                    <f:selectItems var="catalog" value="#{CatalogData.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
+                </p:selectOneMenu>
+            </p>
+            <p>
+                <p:fileUpload style="width: 20rem" id="image" mode="simple" value="#{ProductData.productImage}"></p:fileUpload>
+            </p>
+            <br></br>
+            <p>
+                <p:commandButton value="add product" action="#{ProductData.add()}">
+                </p:commandButton>
+            </p>
+
+        </h:form>
+
+    </p:dialog>
+
+    <!-- modal update catalogg   -->
+    <p:dialog header="Update Catalog" widgetVar="UpdateCatalog"   modal="true">
+        <h:form id="frmUpdateCatalog" style="text-align: center" enctype="multipart/form-data" >
+            <p>
+                <p:inputText style="width: 20rem" placeholder="name" value="#{CatalogData.catalogSelected.name}"/>
+            </p>
+            <br></br>
+            <p>
+                <p:commandButton value="update Catalog"  update="frmCatalog" action="#{CatalogData.update()}">
+                </p:commandButton>
+            </p>
+        </h:form>
+
+    </p:dialog>
+    </h:body>
+</html>

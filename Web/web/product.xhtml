@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Product</title>
+</h:head>
+
+<h:body >
+    <h1 style="text-align: center">Product-list</h1>
+    <p:commandButton value="Add new Product" id="btnToProductForm"
+                     onclick="PF('AddProduct').show()"/>
+    <br></br>
+    <p:commandButton style="float: right" value="To catalog" id="btnToCatalog"
+                     action="#{Router.toCatalog}"/>
+    <div class="card">
+        <h:form>
+                <p:inputText style="width: 20rem" placeholder="Enter name product" value="#{ProductData.nameProductSearch}"  label="Search by name" />
+                <br/>
+            <p:selectOneMenu  style="width: 20rem" id="nameCatalog" value="#{ProductData.nameCatalogSearch}" required="true"  >
+                <f:selectItems var="catalog" value="#{CatalogData.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
+            </p:selectOneMenu>
+            <br></br>
+            <p:commandButton value="filter"  action="#{ProductData.searchProduct}"  update="frmProduct"/>
+        </h:form>
+    </div>
+
+    <br></br>
+<!--product table    -->
+    <h:form id="frmProduct">
+        <div class="card">
+            <p:dataTable var="product" value="#{ProductData.products}">
+                <p:column headerText="id">
+                    <h:outputText value="#{product.id}" />
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{product.name}" />
+                </p:column>
+                <p:column headerText="Price">
+                    <h:outputText value="#{product.price}" />
+                </p:column>
+                <p:column headerText="Image">
+                    <h:graphicImage value ="/images/#{product.image}" style="width: 14rem; height: 13rem"/>
+                </p:column>
+                <p:column headerText="Catalog">
+                    <h:outputText value="#{CatalogData.catalogConnector.getByNameById(product.catalogId)}" />
+                </p:column>
+                <p:column headerText="Feature" exportable="false">
+<!--             update       -->
+                    <p:commandButton value="Update" id="btnUpdateProduct"  onclick="PF('UpdateProduct').show()" icon="pi pi-pencil" update="frmUpdateProduct"
+                                     styleClass="edit-button rounded-button ui-button-success" >
+                        <f:setPropertyActionListener target="#{ProductData.productSelected}" value="#{product}"/>
+                    </p:commandButton>
+                    <p></p>
+<!--                    delete-->
+                    <p:commandButton value="Delete" update="frmProduct" id="btnDeleteProduct" action="#{ProductData.delete(product.id)}" class="ui-button-warning rounded-button" icon="pi pi-trash" >
+                        <p:confirm header="Confirmation" message="Do you want to delete product?" icon="pi pi-info-circle"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
+                    </p:confirmDialog>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </h:form>
+
+
+
+    <!--modal add-->
+
+    <p:dialog header="Add Product" widgetVar="AddProduct"  modal="true">
+        <h:form id="frmAddProduct" style="text-align: center" enctype="multipart/form-data" >
+            <p>
+                <p:inputText style="width: 20rem" placeholder="name" value="#{ProductData.productName}"/>
+            </p>
+            <p>
+                <p:inputText style="width: 20rem" placeholder="price" value="#{ProductData.productPrice}"/>
+            </p>
+            <p>
+                <p:selectOneMenu style="width: 20rem" id="select-catalog" value="#{ProductData.productCatalogId}">
+                    <f:selectItems var="catalog" value="#{CatalogData.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
+                </p:selectOneMenu>
+            </p>
+            <p>
+                <p:fileUpload  style="width: 20rem"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                               invalidFileMessage="only gif | jpg | jpeg | png is allowed" required="true" id="image" mode="simple" value="#{ProductData.productImage}"></p:fileUpload>
+            </p>
+            <br></br>
+            <p>
+                <p:commandButton value="add product"  update="frmProduct" action="#{ProductData.add()}">
+                </p:commandButton>
+            </p>
+
+        </h:form>
+
+    </p:dialog>
+
+    <!-- modal update    -->
+
+    <p:dialog header="Update Product" widgetVar="UpdateProduct"   modal="true">
+        <h:form id="frmUpdateProduct" style="text-align: center" enctype="multipart/form-data" >
+            <p>
+                <p:inputText style="width: 20rem" placeholder="name" value="#{ProductData.productSelected.name}"/>
+            </p>
+            <p>
+                <p:inputText style="width: 20rem" placeholder="price" value="#{ProductData.productSelected.price}"/>
+            </p>
+            <p>
+                <p:selectOneMenu style="width: 20rem" value="#{ProductData.productSelected.catalogId}">
+                    <f:selectItems var="catalog" value="#{CatalogData.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
+                </p:selectOneMenu>
+            </p>
+            <p>
+                <p:fileUpload style="width: 20rem"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                               invalidFileMessage="only gif | jpg | jpeg | png is allowed" required="true" mode="simple" value="#{ProductData.productImage}"></p:fileUpload>
+            </p>
+            <br></br>
+            <p>
+                <p:commandButton value="update product"  update="frmProduct" action="#{ProductData.update()}">
+                </p:commandButton>
+            </p>
+        </h:form>
+    </p:dialog>
+
+</h:body>
+</html>
