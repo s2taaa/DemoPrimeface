@@ -18,15 +18,5 @@
             <to-view-id>/catalog.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-        <navigation-case>
-            <from-outcome>catalog-form.page</from-outcome>
-            <to-view-id>/catalog-form.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>product-form.page</from-outcome>
-            <to-view-id>/product-form.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
     </navigation-rule>
 </faces-config>

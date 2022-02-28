@@ -9,6 +9,7 @@ import util.DataFile;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import java.io.File;
 import java.io.IOException;
@@ -16,9 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ManagedBean(name = "ProductData")
-@ViewScoped
-public class ProductData {
+@ManagedBean(name = "Product")
+@SessionScoped
+public class ProductBean {
     private List<Product> products;
     private String productId;
     private String productName;
@@ -35,17 +36,16 @@ public class ProductData {
     private Double maxPrice = 0.0;
 
 
-    private ProductConnector productConnector = new ProductConnector();
-    private CatalogConnector catalogConnector = new CatalogConnector();
+    private ProductConnector productConnector;
+    private CatalogConnector catalogConnector;
 //funtion
 
     @PostConstruct
     public void init(){
-
-
+        productConnector = new ProductConnector();
         catalogConnector = new CatalogConnector();
-        catalogMap = new HashMap<>();
 
+        catalogMap = new HashMap<>();
         List<Catalog> catalogList = catalogConnector.getAll();
         for (Catalog catalog: catalogList) {
             catalogMap.put(catalog.getId(),catalog);
@@ -57,7 +57,8 @@ public class ProductData {
         this.products = products;
     }
     public List<Product> getProducts() {
-        return  productConnector.getAll();
+        products = productConnector.getAll();
+        return products;
     }
     public void add(){
             Product model = new Product();

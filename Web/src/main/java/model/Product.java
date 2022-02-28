@@ -17,7 +17,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 @Entity
-@ManagedBean(name = "Product")
 public class Product {
     @Id
     private String id;

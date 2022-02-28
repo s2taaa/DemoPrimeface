@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ICatalogConnector {
 
-    String save(Catalog catalog);
+    void save(Catalog catalog);
 
     String getByNameById(String id);
 
@@ -17,9 +17,9 @@ public interface ICatalogConnector {
 
     List<Catalog> getAll();
 
-    String delete(String id);
+    void delete(String id);
 
-    String update(Catalog catalog);
+    void update(Catalog catalog);
 
 
 }

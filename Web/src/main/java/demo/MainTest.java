@@ -4,11 +4,6 @@ import connector.ICatalogConnector;
 import connector.IProductConnector;
 import connector.impl.CatalogConnector;
 import connector.impl.ProductConnector;
-import model.Product;
-import model.bean.CatalogData;
-import model.bean.ProductData;
-
-import java.util.List;
 
 public class MainTest {
     public static void main(String[] args) {

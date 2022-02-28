@@ -16,13 +16,13 @@
                      action="#{Router.toCatalog}"/>
     <div class="card">
         <h:form>
-                <p:inputText style="width: 20rem" placeholder="Enter name product" value="#{ProductData.nameProductSearch}"  label="Search by name" />
+                <p:inputText style="width: 20rem" placeholder="Enter name product" value="#{Product.nameProductSearch}"  label="Search by name" />
                 <br/>
-            <p:selectOneMenu  style="width: 20rem" id="nameCatalog" value="#{ProductData.nameCatalogSearch}" required="true"  >
-                <f:selectItems var="catalog" value="#{CatalogData.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
+            <p:selectOneMenu  style="width: 20rem" id="nameCatalog" value="#{Product.nameCatalogSearch}" required="true"  >
+                <f:selectItems var="catalog" value="#{Catalog.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
             </p:selectOneMenu>
             <br></br>
-            <p:commandButton value="filter"  action="#{ProductData.searchProduct}"  update="frmProduct"/>
+            <p:commandButton value="filter"  action="#{Product.searchProduct}"  update="frmProduct"/>
         </h:form>
     </div>
 
@@ -30,7 +30,7 @@
 <!--product table    -->
     <h:form id="frmProduct">
         <div class="card">
-            <p:dataTable var="product" value="#{ProductData.products}">
+            <p:dataTable var="product" value="#{Product.products}">
                 <p:column headerText="id">
                     <h:outputText value="#{product.id}" />
                 </p:column>
@@ -44,17 +44,17 @@
                     <h:graphicImage value ="/images/#{product.image}" style="width: 14rem; height: 13rem"/>
                 </p:column>
                 <p:column headerText="Catalog">
-                    <h:outputText value="#{CatalogData.catalogConnector.getByNameById(product.catalogId)}" />
+                    <h:outputText value="#{Catalog.catalogConnector.getByNameById(product.catalogId)}" />
                 </p:column>
                 <p:column headerText="Feature" exportable="false">
 <!--             update       -->
                     <p:commandButton value="Update" id="btnUpdateProduct"  onclick="PF('UpdateProduct').show()" icon="pi pi-pencil" update="frmUpdateProduct"
                                      styleClass="edit-button rounded-button ui-button-success" >
-                        <f:setPropertyActionListener target="#{ProductData.productSelected}" value="#{product}"/>
+                        <f:setPropertyActionListener target="#{Product.productSelected}" value="#{product}"/>
                     </p:commandButton>
                     <p></p>
 <!--                    delete-->
-                    <p:commandButton value="Delete" update="frmProduct" id="btnDeleteProduct" action="#{ProductData.delete(product.id)}" class="ui-button-warning rounded-button" icon="pi pi-trash" >
+                    <p:commandButton value="Delete" update="frmProduct" id="btnDeleteProduct" action="#{Product.delete(product.id)}" class="ui-button-warning rounded-button" icon="pi pi-trash" >
                         <p:confirm header="Confirmation" message="Do you want to delete product?" icon="pi pi-info-circle"/>
                     </p:commandButton>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
@@ -73,23 +73,23 @@
     <p:dialog header="Add Product" widgetVar="AddProduct"  modal="true">
         <h:form id="frmAddProduct" style="text-align: center" enctype="multipart/form-data" >
             <p>
-                <p:inputText style="width: 20rem" placeholder="name" value="#{ProductData.productName}"/>
+                <p:inputText style="width: 20rem" placeholder="name" value="#{Product.productName}"/>
             </p>
             <p>
-                <p:inputText style="width: 20rem" placeholder="price" value="#{ProductData.productPrice}"/>
+                <p:inputText style="width: 20rem" placeholder="price" value="#{Product.productPrice}"/>
             </p>
             <p>
-                <p:selectOneMenu style="width: 20rem" id="select-catalog" value="#{ProductData.productCatalogId}">
-                    <f:selectItems var="catalog" value="#{CatalogData.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
+                <p:selectOneMenu style="width: 20rem" id="select-catalog" value="#{Product.productCatalogId}">
+                    <f:selectItems var="catalog" value="#{Catalog.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
                 </p:selectOneMenu>
             </p>
             <p>
                 <p:fileUpload  style="width: 20rem"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                               invalidFileMessage="only gif | jpg | jpeg | png is allowed" required="true" id="image" mode="simple" value="#{ProductData.productImage}"></p:fileUpload>
+                               invalidFileMessage="only gif | jpg | jpeg | png is allowed" required="true" id="image" mode="simple" value="#{Product.productImage}"></p:fileUpload>
             </p>
             <br></br>
             <p>
-                <p:commandButton value="add product"  update="frmProduct" action="#{ProductData.add()}">
+                <p:commandButton value="add product"  update="frmProduct" action="#{Product.add()}">
                 </p:commandButton>
             </p>
 
@@ -102,23 +102,23 @@
     <p:dialog header="Update Product" widgetVar="UpdateProduct"   modal="true">
         <h:form id="frmUpdateProduct" style="text-align: center" enctype="multipart/form-data" >
             <p>
-                <p:inputText style="width: 20rem" placeholder="name" value="#{ProductData.productSelected.name}"/>
+                <p:inputText style="width: 20rem" placeholder="name" value="#{Product.productSelected.name}"/>
             </p>
             <p>
-                <p:inputText style="width: 20rem" placeholder="price" value="#{ProductData.productSelected.price}"/>
+                <p:inputText style="width: 20rem" placeholder="price" value="#{Product.productSelected.price}"/>
             </p>
             <p>
-                <p:selectOneMenu style="width: 20rem" value="#{ProductData.productSelected.catalogId}">
-                    <f:selectItems var="catalog" value="#{CatalogData.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
+                <p:selectOneMenu style="width: 20rem" value="#{Product.productSelected.catalogId}">
+                    <f:selectItems var="catalog" value="#{Catalog.catalogs}" itemValue="#{catalog.id}" itemLabel="#{catalog.name}"></f:selectItems>
                 </p:selectOneMenu>
             </p>
             <p>
                 <p:fileUpload style="width: 20rem"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                               invalidFileMessage="only gif | jpg | jpeg | png is allowed" required="true" mode="simple" value="#{ProductData.productImage}"></p:fileUpload>
+                               invalidFileMessage="only gif | jpg | jpeg | png is allowed" required="true" mode="simple" value="#{Product.productImage}"></p:fileUpload>
             </p>
             <br></br>
             <p>
-                <p:commandButton value="update product"  update="frmProduct" action="#{ProductData.update()}">
+                <p:commandButton value="update product"  update="frmProduct" action="#{Product.update()}">
                 </p:commandButton>
             </p>
         </h:form>

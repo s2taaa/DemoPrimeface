@@ -14,7 +14,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 @Entity
-@ManagedBean(name = "Catalog")
 public class Catalog {
     @Id
     private String id;

@@ -13,10 +13,4 @@ public class Router {
     public String toCatalog(){
         return "catalog.page";
     }
-    public String toCatalogForm(){
-        return "catalog-form.page";
-    }
-    public String toProductForm(){
-        return "product-form.page";
-    }
 }

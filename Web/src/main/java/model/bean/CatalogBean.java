@@ -5,22 +5,31 @@ import model.Catalog;
 import model.Product;
 import util.DataFile;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-@ManagedBean(name = "CatalogData")
-@ViewScoped
-public class CatalogData {
+@ManagedBean(name = "Catalog")
+@SessionScoped
+public class CatalogBean  {
 
     private List<Catalog> catalogs;
     private Catalog catalogSelected;
     private String id;
     private String name;
 
-    private CatalogConnector catalogConnector = new CatalogConnector();
+    private  CatalogConnector catalogConnector;
+
+    @PostConstruct
+    public void init(){
+        catalogConnector = new CatalogConnector();
+        catalogs = catalogConnector.getAll();
+    }
+
 
     public void add(){
         Catalog model = new Catalog();
@@ -65,7 +74,8 @@ public class CatalogData {
     }
 
     public List<Catalog> getCatalogs() {
-        return catalogConnector.getAll();
+        catalogs = catalogConnector.getAll();
+        return catalogs;
     }
 
     public void setCatalogs(List<Catalog> catalogs) {

@@ -21,11 +21,10 @@ public class CatalogConnector extends BaseConnector implements ICatalogConnector
         return getMongoObjectConnector("catalog");
     }
     @Override
-    public String save(Catalog catalog) {
+    public void save(Catalog catalog) {
         CatalogFactory factory = new CatalogFactory();
         IDynamicObject iDynamicObject = factory.createObject(catalog);
         getMongoObjectConnectorCatalog().insert(iDynamicObject);
-        return "catalog.page";
 
     }
 
@@ -46,18 +45,16 @@ public class CatalogConnector extends BaseConnector implements ICatalogConnector
     }
 
     @Override
-    public String delete(String id) {
+    public void delete(String id) {
         getMongoObjectConnectorCatalog().removeDocument(id);
-        return "catalog.page";
 
     }
 
     @Override
-    public String update(Catalog catalog) {
+    public void update(Catalog catalog) {
         CatalogFactory factory = new CatalogFactory();
         IDynamicObject iDynamicObject = factory.createObject(catalog);
         getMongoObjectConnectorCatalog().update(iDynamicObject);
-        return "catalog.page";
 
     }
 }
